@@ -5,8 +5,122 @@ const { Base64 } = require("js-base64");
 
 const app = express();
 const port = process.env.PORT || 8080;
+const multer = require("multer");
+const upload = multer(); // Initialize multer instance
+const cors = require("cors")
+
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017');
+
+mongoose.connection.on('error', function() {
+  console.log("mongoose error")
+})
+
+mongoose.connection.on('connected', function() {
+  console.log("mongoose connected")
+})
+
+const Person = mongoose.model('Person', { 
+  name: String,
+  description: String,
+  picture: String,
+  age: Number,
+  isVerified: Boolean,
+  address: String
+});
+
+const Like = mongoose.model("Like", {
+  from: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  to: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  match: Boolean,
+})
 
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.use(upload.none()); // Set upload.none() as the default middleware for all routes
+app.use(cors());
+
+app.post("/api/person", async (req, res) => {
+  try {
+    console.log("post person");
+
+    const foundPerson = await Person.findOne({ address: req.body.address });
+    console.log(foundPerson)
+    if (foundPerson) return res.status(400).json({ error: "Person already exists" });
+
+    const person = new Person(req.body);
+    await person.save();
+    return res.status(200).json(person);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.put("/api/person/:id", async (req, res) => {
+  try {
+    const updatedPerson = await Person.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: req.body },
+      { new: true }
+    );
+    return res.status(200).json(updatedPerson);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/api/person", async (req, res) => {
+  console.log("get persons");
+  const person = await Person.find();
+  return res.status(200).set("Content-Type", "application/json").send(person);
+})
+
+app.get("/api/person/random/:id", async (req, res) => {
+  console.log("get random person except id");
+  const person = await Person.aggregate([
+    { $match: { _id: { $ne: new mongoose.Types.ObjectId(req.params.id) } } },
+    { $sample: { size: 1 } }
+  ]);
+  return res.status(200).set("Content-Type", "application/json").send(person);
+})
+
+app.get("/api/person/:id", async (req, res) => {
+  console.log("get person");
+  const person = await Person.findById(req.params.id);
+  console.log(person)
+  return res.status(200).set("Content-Type", "application/json").send(person);
+})
+
+app.post("/api/like", async (req, res) => {
+  console.log("post like");
+  const { from, to } = req.body;
+  const matches = await Like.find({ from: to, to: from});
+
+  let match = false;
+  if (matches.length > 0) {
+    match = true;
+    console.log("There's a match!")
+  }
+
+  const fromDoc = await Person.findById(from);
+  const toDoc = await Person.findById(to);
+
+  const like = new Like({ from: fromDoc, to: toDoc, match });
+  await like.save();
+
+  return res.status(200).set("Content-Type", "application/json").send(like);
+})
+
+app.get("/api/like", async (req, res) => {
+  console.log("get likes");
+  const like = await Like.find();
+  return res.status(200).set("Content-Type", "application/json").send(like);
+})
+
 
 app.get("/api/polygon-id/sign-in", async (req, res) => {
   console.log("get Auth Request");
