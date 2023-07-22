@@ -84,7 +84,7 @@ async function Callback(req, res) {
 
   const ethURL = "https://rpc.ankr.com/polygon_mumbai";
   const contractAddress = "0x134B1BE34911E39A8397ec6289782989729807a4";
-  const keyDIR = "../keys";
+  const keyDIR = "./keys";
 
   const ethStateResolver = new resolver.EthStateResolver(
     ethURL,
