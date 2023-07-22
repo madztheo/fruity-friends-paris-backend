@@ -4,7 +4,7 @@ const getRawBody = require("raw-body");
 const { Base64 } = require("js-base64");
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.use(express.static("static"));
 
