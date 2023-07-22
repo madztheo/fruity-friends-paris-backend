@@ -50,9 +50,6 @@ async function GetAuthRequest(req, res) {
   // Generate request for basic authentication
   const request = auth.createAuthorizationRequest("test flow", audience, uri);
 
-  request.id = "7f38a193-0918-4a48-9fac-36adfdb8b542";
-  request.thid = "7f38a193-0918-4a48-9fac-36adfdb8b542";
-
   // Add request for a specific proof
   const proofRequest = {
     id: 1,
