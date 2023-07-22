@@ -51,6 +51,12 @@ async function GetAuthRequest(req, res) {
   // Generate request for basic authentication
   const request = auth.createAuthorizationRequest("test flow", audience, uri);
 
+  const getDateFrom18YearsAgo = () => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - 18);
+    return date;
+  };
+
   // Add request for a specific proof
   const proofRequest = {
     id: 1,
@@ -62,7 +68,7 @@ async function GetAuthRequest(req, res) {
       context: "ipfs://QmbqiY8E1Lq6mneASQTsJSfF57TDRLcKQSi7RUomXS4HFF",
       credentialSubject: {
         birthdate: {
-          $lt: 20000101,
+          $lt: getDateFrom18YearsAgo().valueOf(),
         },
       },
     },
