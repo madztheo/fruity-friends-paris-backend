@@ -114,13 +114,17 @@ async function Callback(req, res) {
       documentLoader: schemaLoader,
     }
   );
+  console.log("verifier");
   console.log(verifier);
 
   try {
     const opts = {
       AcceptedStateTransitionDelay: 5 * 60 * 1000, // 5 minute
     };
+    console.log("About to verify");
     authResponse = await verifier.fullVerify(tokenStr, authRequest, opts);
+    console.log("authResponse");
+    console.log(authResponse);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
