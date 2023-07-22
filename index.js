@@ -30,11 +30,9 @@ app.post("/api/polygon-id/callback", (req, res) => {
   Callback(req, res);
 });
 
-app
-  .listen(port, () => {
-    console.log(`server running on port ${port}`);
-  })
-  .timeout(2 * 60 * 1000);
+app.listen(port, () => {
+  console.log(`server running on port ${port}`);
+});
 
 // Create a map to store the auth requests and their session IDs
 const requestMap = {};
