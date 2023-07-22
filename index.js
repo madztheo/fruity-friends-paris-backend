@@ -40,7 +40,7 @@ const requestMap = {};
 // GetQR returns auth request
 async function GetAuthRequest(req, res) {
   // Audience is verifier id
-  const hostUrl = `${req.protocol}://${req.hostname}`;
+  const hostUrl = `https://${req.hostname}`;
   const sessionId = Object.keys(requestMap).length + 1;
   const callbackURL = "/api/polygon-id/callback";
   const audience =
