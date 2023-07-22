@@ -122,6 +122,9 @@ async function Callback(req, res) {
       AcceptedStateTransitionDelay: 5 * 60 * 1000, // 5 minute
     };
     console.log("About to verify");
+    console.log(tokenStr);
+    console.log(authRequest);
+    console.log(opts);
     authResponse = await verifier.fullVerify(tokenStr, authRequest, opts);
     console.log("authResponse");
     console.log(authResponse);
