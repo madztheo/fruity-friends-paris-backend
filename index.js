@@ -30,7 +30,7 @@ app.post("/api/polygon-id/callback", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("server running on port 8080");
+  console.log(`server running on port ${port}`);
 });
 
 // Create a map to store the auth requests and their session IDs
@@ -39,7 +39,7 @@ const requestMap = new Map();
 // GetQR returns auth request
 async function GetAuthRequest(req, res) {
   // Audience is verifier id
-  const hostUrl = "http://localhost:8080";
+  const hostUrl = `${req.protocol}://${req.hostname}:${port}`;
   const sessionId = 1;
   const callbackURL = "/api/polygon-id/callback";
   const audience =
