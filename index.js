@@ -164,7 +164,7 @@ async function GetAuthRequest(req, res) {
   const audience =
     "did:polygonid:polygon:mumbai:2qDyy1kEo2AYcP3RT4XGea7BtxsY285szg6yP9SPrs";
 
-  const uri = `${hostUrl}${callbackURL}?sessionId=${sessionId}`;
+  const uri = `${hostUrl}${callbackURL}?sessionId=${sessionId}&userId=${req.body.user_id}`;
 
   // Generate request for basic authentication
   const request = auth.createAuthorizationRequest("test flow", audience, uri);
@@ -257,6 +257,15 @@ async function Callback(req, res) {
     authResponse = await verifier.fullVerify(tokenStr, authRequest, opts);
     console.log("authResponse");
     console.log(authResponse);
+    await Person.findOneAndUpdate(
+      { _id: userId },
+      {
+        $set: {
+          isPolygonIdVerified: true,
+        },
+      },
+      { new: true }
+    );
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
