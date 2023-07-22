@@ -114,6 +114,7 @@ async function Callback(req, res) {
       documentLoader: schemaLoader,
     }
   );
+  console.log(verifier);
 
   try {
     const opts = {
