@@ -10,6 +10,7 @@ app.use(express.static("static"));
 
 app.get("/api/polygon-id/sign-in", async (req, res) => {
   console.log("get Auth Request");
+  console.log(loaders);
   const request = await GetAuthRequest(req, res);
   return res.status(200).set("Content-Type", "application/json").send(request);
 });
@@ -100,10 +101,17 @@ async function Callback(req, res) {
 
   // Locate the directory that contains circuit's verification keys
   const verificationKeyloader = new loaders.FSKeyLoader(keyDIR);
-  const sLoader = loaders.getDocumentLoader("ipfs.io");
+  //const sLoader = loaders.getDocumentLoader("ipfs.io");
+  const schemaLoader = getDocumentLoader({
+    ipfsNodeURL: "ipfs.io",
+  });
 
   // EXECUTE VERIFICATION
-  const verifier = new auth.Verifier(verificationKeyloader, sLoader, resolvers);
+  const verifier = new auth.Verifier(
+    verificationKeyloader,
+    schemaLoader,
+    resolvers
+  );
 
   try {
     const opts = {
