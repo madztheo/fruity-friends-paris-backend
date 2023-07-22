@@ -89,22 +89,27 @@ app.get("/api/person/:id", async (req, res) => {
 
 app.post("/api/like", async (req, res) => {
   console.log("post like");
-  const { from, to } = req.body;
-  const matches = await Like.find({ from: to, to: from });
+  try {
+    const { from, to } = req.body;
+    const matches = await Like.find({ from: to, to: from });
 
-  let match = false;
-  if (matches.length > 0) {
-    match = true;
-    console.log("There's a match!");
+    let match = false;
+    if (matches.length > 0) {
+      match = true;
+      console.log("There's a match!");
+    }
+
+    const fromDoc = await Person.findById(from);
+    const toDoc = await Person.findById(to);
+
+    const like = new Like({ from: fromDoc, to: toDoc, match });
+    await like.save();
+
+    return res.status(200).set("Content-Type", "application/json").send(like);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
   }
-
-  const fromDoc = await Person.findById(from);
-  const toDoc = await Person.findById(to);
-
-  const like = new Like({ from: fromDoc, to: toDoc, match });
-  await like.save();
-
-  return res.status(200).set("Content-Type", "application/json").send(like);
 });
 
 app.get("/api/like", async (req, res) => {
