@@ -60,7 +60,8 @@ async function GetAuthRequest(req, res) {
     query: {
       allowedIssuers: ["*"],
       type: "ageCheck",
-      context: "ipfs://QmbqiY8E1Lq6mneASQTsJSfF57TDRLcKQSi7RUomXS4HFF",
+      context:
+        "https://wagmi-studio.fra1.cdn.digitaloceanspaces.com/ethglobal-paris-2023/Age%20Check.jsonld",
       credentialSubject: {
         birthdate: {
           $lt: 20000101,
