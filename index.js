@@ -164,7 +164,7 @@ async function GetAuthRequest(req, res) {
   const audience =
     "did:polygonid:polygon:mumbai:2qDyy1kEo2AYcP3RT4XGea7BtxsY285szg6yP9SPrs";
 
-  const uri = `${hostUrl}${callbackURL}?sessionId=${sessionId}&userId=${req.body.user_id}`;
+  const uri = `${hostUrl}${callbackURL}?sessionId=${sessionId}&userId=${req.query.user_id}`;
 
   // Generate request for basic authentication
   const request = auth.createAuthorizationRequest("test flow", audience, uri);
