@@ -41,14 +41,12 @@ const requestMap = {};
 async function GetAuthRequest(req, res) {
   // Audience is verifier id
   const hostUrl = `${req.protocol}://${req.hostname}`;
-  const sessionId = 1;
+  const sessionId = Object.keys(requestMap).length + 1;
   const callbackURL = "/api/polygon-id/callback";
   const audience =
     "did:polygonid:polygon:mumbai:2qDyy1kEo2AYcP3RT4XGea7BtxsY285szg6yP9SPrs";
 
-  const uri = `${hostUrl}${callbackURL}?sessionId=${
-    Object.keys(requestMap).length + 1
-  }`;
+  const uri = `${hostUrl}${callbackURL}?sessionId=${sessionId}`;
 
   // Generate request for basic authentication
   const request = auth.createAuthorizationRequest("test flow", audience, uri);
