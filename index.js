@@ -35,7 +35,7 @@ app.listen(port, () => {
 });
 
 // Create a map to store the auth requests and their session IDs
-const requestMap = new Map();
+const requestMap = {};
 
 // GetQR returns auth request
 async function GetAuthRequest(req, res) {
@@ -70,7 +70,9 @@ async function GetAuthRequest(req, res) {
   request.body.scope = [...scope, proofRequest];
 
   // Store auth request in map associated with session ID
-  requestMap.set(`${sessionId}`, request);
+  requestMap[`${sessionId}`] = request;
+  console.log("requestMap");
+  console.log(requestMap);
   return request;
 }
 
@@ -97,7 +99,9 @@ async function Callback(req, res) {
   };
 
   // fetch authRequest from sessionID
-  const authRequest = requestMap.get(`${sessionId}`);
+  console.log("requestMap");
+  console.log(requestMap);
+  const authRequest = requestMap[`${sessionId}`];
 
   // Locate the directory that contains circuit's verification keys
   const verificationKeyloader = new loaders.FSKeyLoader(keyDIR);
