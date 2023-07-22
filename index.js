@@ -205,6 +205,7 @@ async function GetAuthRequest(req, res) {
 async function Callback(req, res) {
   // Get session ID from request
   const sessionId = req.query.sessionId;
+  const userId = req.query.userId;
 
   // get JWZ token params from the post request
   const raw = await getRawBody(req);
