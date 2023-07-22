@@ -116,7 +116,6 @@ async function Callback(req, res) {
     verificationKeyloader,
     resolvers,
     {
-      documentLoader: schemaLoader,
       ipfsGatewayURL: "ipfs.io",
     }
   );
