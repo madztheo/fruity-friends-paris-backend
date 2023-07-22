@@ -15,7 +15,8 @@ const Person = mongoose.model("Person", {
   description: String,
   picture: String,
   age: Number,
-  isVerified: Boolean,
+  isWorldcoinVerified: Boolean,
+  isPolygonIdVerified: Boolean,
   address: String,
 });
 
