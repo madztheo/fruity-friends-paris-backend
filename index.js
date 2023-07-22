@@ -116,7 +116,7 @@ async function Callback(req, res) {
     verificationKeyloader,
     resolvers,
     {
-      ipfsGatewayURL: "ipfs.io",
+      ipfsGatewayURL: "https://ipfs.io",
     }
   );
   console.log("verifier");
