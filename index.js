@@ -6,7 +6,7 @@ const { Base64 } = require("js-base64");
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use(express.static("static"));
+app.use(express.static("public"));
 
 app.get("/api/polygon-id/sign-in", async (req, res) => {
   console.log("get Auth Request");
@@ -60,8 +60,7 @@ async function GetAuthRequest(req, res) {
     query: {
       allowedIssuers: ["*"],
       type: "ageCheck",
-      context:
-        "https://wagmi-studio.fra1.cdn.digitaloceanspaces.com/ethglobal-paris-2023/Age%20Check.jsonld",
+      context: `${hostUrl}/schemas/ageCheck.jsonld`,
       credentialSubject: {
         birthdate: {
           $lt: 20000101,
