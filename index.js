@@ -8,17 +8,7 @@ const port = process.env.PORT || 8080;
 const multer = require("multer");
 const upload = multer(); // Initialize multer instance
 const cors = require("cors");
-
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGO_URL);
-
-mongoose.connection.on("error", function () {
-  console.log("mongoose error");
-});
-
-mongoose.connection.on("connected", function () {
-  console.log("mongoose connected");
-});
 
 const Person = mongoose.model("Person", {
   name: String,
@@ -146,6 +136,14 @@ app.post("/api/polygon-id/callback", (req, res) => {
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
+  mongoose.connect(process.env.MONGO_URL);
+  mongoose.connection.on("error", function () {
+    console.log("mongoose error");
+  });
+
+  mongoose.connection.on("connected", function () {
+    console.log("mongoose connected");
+  });
 });
 
 // Create a map to store the auth requests and their session IDs
