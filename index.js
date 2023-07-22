@@ -102,15 +102,17 @@ async function Callback(req, res) {
   // Locate the directory that contains circuit's verification keys
   const verificationKeyloader = new loaders.FSKeyLoader(keyDIR);
   //const sLoader = loaders.getDocumentLoader("ipfs.io");
-  const schemaLoader = getDocumentLoader({
+  const schemaLoader = loaders.getDocumentLoader({
     ipfsNodeURL: "ipfs.io",
   });
 
   // EXECUTE VERIFICATION
-  const verifier = new auth.Verifier(
+  const verifier = await auth.Verifier.newVerifier(
     verificationKeyloader,
-    schemaLoader,
-    resolvers
+    resolvers,
+    {
+      documentLoader: schemaLoader,
+    }
   );
 
   try {
